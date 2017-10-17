@@ -1,0 +1,10 @@
+html
+  head
+    title= title
+  body
+    h1= message
+    fieldset
+      form(action='/', method='post')
+        label(for='message') Message
+        input(type='text', name='message')
+        input(type='submit')
