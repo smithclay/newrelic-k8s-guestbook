@@ -24,7 +24,10 @@ app.use(function(req, res, next) {
 });
 ```
 
-This makes it easier to debug and troubleshoot cluster-specific issues using application transaction traces. 
+This makes it easier to debug and troubleshoot cluster-specific issues using application transaction traces and is surfaced in the UI (and Insights):
+
+![traced_error_for_error_-_newrelic-k8s-node-redis_-_new_relic](https://user-images.githubusercontent.com/27153/31741413-ffda451c-b408-11e7-837f-0613e25898d9.png)
+
 
 ## Creating the cluster
 
