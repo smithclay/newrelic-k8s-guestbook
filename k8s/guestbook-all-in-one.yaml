@@ -94,11 +94,10 @@ metadata:
     app: guestbook
     tier: frontend
 spec:
-  # if your cluster supports it, uncomment the following to automatically create
-  # an external load-balanced IP for the frontend service. (Confirmed on GKE)
   type: LoadBalancer
   ports:
   - port: 80
+    targetPort: 3000
   selector:
     app: guestbook
     tier: frontend
@@ -160,5 +159,4 @@ spec:
             fieldRef:
               fieldPath: spec.serviceAccountName        
         ports:
-          - port: 3000
-            targetPort: 80
+          - containerPort: 3000
