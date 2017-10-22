@@ -1,6 +1,7 @@
 html
   head
     title= title
+    != newrelic.getBrowserTimingHeader()
     link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.min.css')
     script(src='//cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js')
   body

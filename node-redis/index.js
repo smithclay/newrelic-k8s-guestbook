@@ -9,6 +9,7 @@ const redisHost = process.env.GET_HOSTS_ENV !== 'env' ? 'redis-master' : process
 
 const client = redis.createClient({ host: redisHost, port: 6379 });
 app.set('view engine', 'pug');
+app.locals.newrelic = newrelic;
 
 // Middleware for adding custom attributes
 // These map to environment variables exposed in the pod spec
