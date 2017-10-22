@@ -28,14 +28,27 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Guestbook', message: 'Hello there!' })    
+  res.render('index', { title: 'Guestbook', message: 'Send a string to redis.' })    
+});
+
+app.get('/message', function (req, res) {
+  client.get('message', function(err, reply) {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    return res.send(reply);
+  });
+});
+
+app.get('/healthz', function (req, res) {
+  res.status(200).send('OK');    
 });
 
 app.post('/', function(req, res) {
     var message = req.body.message;
-    client.set('message', value, function(err) {
+    client.set('message', message, function(err) {
         if (err) {
-            return res.stats(500).send(err);
+            return res.status(500).send(err);
         }
         res.redirect('/');        
     });

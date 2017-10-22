@@ -1,10 +1,19 @@
 html
   head
     title= title
+    link(rel='stylesheet', href='//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js')
   body
     h1= message
-    fieldset
+    div Last sent message:&nbsp;
+      span(id='message-text') ...
+    div
       form(action='/', method='post')
         label(for='message') Message
-        input(type='text', name='message')
+        input(type='text', size=30, name='message')
+        br
         input(type='submit')
+    script(type='text/javascript').
+      $.get('/message', function(data) { 
+        $('#message-text').text(data);
+      });
