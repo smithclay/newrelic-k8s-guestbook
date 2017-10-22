@@ -116,7 +116,13 @@ spec:
     spec:
       containers:
       - name: node-redis
-        image: docker.io/smithclay/newrelic-k8s-node-redis:v0.0.1
+        image: docker.io/smithclay/newrelic-k8s-node-redis:v0.0.2
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 3
+          periodSeconds: 3
         resources:
           requests:
             cpu: 100m
