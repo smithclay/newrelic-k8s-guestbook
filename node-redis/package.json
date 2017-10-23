@@ -1,6 +1,6 @@
 {
   "name": "newrelic-k8s-guestbook-node-redis",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "sample node.js app that runs on k8s",
   "main": "index.js",
   "scripts": {

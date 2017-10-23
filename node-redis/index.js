@@ -11,6 +11,13 @@ const client = redis.createClient({ host: redisHost, port: 6379 });
 app.set('view engine', 'pug');
 app.locals.newrelic = newrelic;
 
+var lookBusy = function() {
+  const end = Date.now() + Math.floor(Math.random() * 1000);
+  while (Date.now() < end) {
+    const doSomethingHeavyInJavaScript = 1 + 2 + 3;
+  }
+};
+
 // Middleware for adding custom attributes
 // These map to environment variables exposed in the pod spec
 var CUSTOM_PARAMETERS = {
@@ -29,10 +36,18 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function (req, res) {
+  if (process.env.LOOK_BUSY) {
+    lookBusy();
+  }
+
   res.render('index', { title: 'Guestbook', message: 'Send a string to redis.' })    
 });
 
 app.get('/message', function (req, res) {
+  if (process.env.LOOK_BUSY) {
+    lookBusy();
+  }
+
   client.get('message', function(err, reply) {
     if (err) {
       return res.status(500).send(err);
