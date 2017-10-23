@@ -13,7 +13,7 @@ app.locals.newrelic = newrelic;
 
 // Pauses for about 1 second
 var lookBusy = function() {
-  const end = Date.now() + 1000;
+  const end = Date.now() + 100;
   while (Date.now() < end) {
     const doSomethingHeavyInJavaScript = 1 + 2 + 3;
   }
