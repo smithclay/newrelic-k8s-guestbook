@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: chaoskube
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: chaoskube
+    spec:
+      containers:
+      - name: chaoskube
+        image: quay.io/linki/chaoskube:v0.6.1
+        args:
+        - --interval=1m
+        - --no-dry-run
+        - --labels=app=guestbook

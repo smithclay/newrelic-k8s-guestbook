@@ -116,7 +116,7 @@ spec:
     spec:
       containers:
       - name: node-redis
-        image: docker.io/smithclay/newrelic-k8s-node-redis:v0.0.2
+        image: docker.io/smithclay/newrelic-k8s-node-redis:v0.0.6
         livenessProbe:
           httpGet:
             path: /healthz
@@ -128,6 +128,12 @@ spec:
             cpu: 100m
             memory: 100Mi
         env:
+          # tells the node.js app to pause at random intervals
+        - name: LOOK_BUSY
+          value: t
+          # tells the node.js app to throw synthetic errors
+        - name: THROW_ERROR
+          value: t
         - name: GET_HOSTS_FROM
           value: dns
           # If your cluster config does not include a dns service, then to
