@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: newrelic-infra
+  namespace: kube-system
+  labels:
+    app: newrelic-infra
+spec:
+  selector:
+    matchLabels:
+      name: newrelic-infra
+  template:
+    metadata:
+      labels:
+        name: newrelic-infra
+    spec:
+      containers:
+        - name: newrelic-infra
+          image: newrelic/ohaik:1.0.0-beta3
+          resources:
+            limits:
+              memory: 100Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - mountPath: /host
+              name: host-volume
+              readOnly: true
+            - mountPath: /var/run/docker.sock
+              name: host-docker-socket
+          env:
+            - name: CLUSTER_NAME
+              value: cluster.multicloud.online
+            - name: NRIA_LICENSE_KEY
+              value: 9d25b6183861439b979fe2b6dbf3e497143f803b
+            - name: NRIA_DISPLAY_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+            - name: NRIA_PASSTHROUGH_ENVIRONMENT
+              value: "KUBERNETES_SERVICE_HOST,KUBERNETES_SERVICE_PORT,CLUSTER_NAME"
+      volumes:
+        - name: host-volume
+          hostPath:
+            path: /
+        - name: host-docker-socket
+          hostPath:
+            path: /var/run/docker.sock
