@@ -1,6 +1,14 @@
 # newrelic-k8s-guestbook
 ### simple kubernetes app instrumented using New Relic APM
 
+## Requirements
+
+* New Relic License Key
+* AWS or Google Cloud Account
+* kubectl
+
+You'll want to fork this repository and adjust the `NEWRELIC_LICENSE_KEY` environment variable to point to your account.
+
 ## APM instrumentation background
 
 This example uses the [Kubernetes Downward API to expose Pod metadata to the running container as environment variables](https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/).
@@ -32,7 +40,7 @@ Instructions are also below on how to install New Relic Infrastucture on the clu
 
 ## Creating the cluster
 
-A Kubernetes cluster is required. This has been tested using Google Container Engine (i.e. Google-flavored managed Kubernetes) and AWS using the [`kops`](https://github.com/kubernetes/kops/blob/master/docs/aws.md) tool but should work on any Kubernetes 1.7 cluster.
+A Kubernetes cluster is required. This has been tested using Google Container Engine (i.e. Google-flavored managed Kubernetes) and AWS using the [`kops`](https://github.com/kubernetes/kops/blob/master/docs/aws.md) tool but should work on any *Kubernetes 1.8* cluster.
 
 ### AWS
 
@@ -49,7 +57,7 @@ gcloud container clusters get-credentials [gke-cluster-name] --zone [gke-zone]
 Run the following commands using `kubectl` on the cluster.
  It will create the nessecary services and deployments.
 
-### Running the guestbook app on the cluster
+### Running the New Relic-instrumented guestbook app on the cluster
 
 With kubectl connected to the cluster, run:
 
@@ -63,12 +71,29 @@ service "frontend" created
 deployment "frontend" created
 ```
 
-### Running New Relic Infrastructure on the k8s cluster
+### Installing New Relic Infrastructure integrations
 
-Installation are available in the `k8s/newrelic` directory.
+Based on the instructions on the [New Relic documentation website](https://docs.newrelic.com/docs/kubernetes-monitoring-integration).
+
+Install [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics). This repository has bundled v1.2.0 for easy deployment.
+
+```
+$ kubectl apply -f k8s/kube-state-metrics-1.2.0
+```
+
+Next, install the New Relic Infrastructure daemonset. Modify the file to point to your cluster and license key:
+
+```
+$ kubectl apply -f k8s/newrelic/newrelic-infra-beta2.yml
+```
 
 ### Deleting the deployment
 
 ```
 $ kubectl delete -f k8s/guestbook-all-in-one.yaml
+```
+### Deleting the cluster
+
+```
+$ kops delete cluster <<cluster-name>>
 ```
