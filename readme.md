@@ -1,6 +1,8 @@
 # newrelic-k8s-guestbook
 ### simple kubernetes app instrumented using New Relic APM
 
+blog post based on this environment: https://blog.newrelic.com/2017/11/27/monitoring-application-performance-in-kubernetes/
+
 ## Requirements
 
 * New Relic License Key
@@ -36,13 +38,13 @@ This makes it easier to debug and troubleshoot cluster-specific issues using app
 
 ![traced_error_for_error_-_newrelic-k8s-node-redis_-_new_relic](https://user-images.githubusercontent.com/27153/31741413-ffda451c-b408-11e7-837f-0613e25898d9.png)
 
-Instructions are also below on how to install New Relic Infrastucture on the cluster as well.
+Kubernetes infrastructure metrics are also collected using the New Relic Infrastructure integration.
 
 ## Creating the cluster
 
 A Kubernetes cluster is required. This has been tested using Google Container Engine (i.e. Google-flavored managed Kubernetes) and AWS using the [`kops`](https://github.com/kubernetes/kops/blob/master/docs/aws.md) tool but should work on any *Kubernetes 1.8* cluster.
 
-### AWS
+### AWS (kops)
 
 The latest version of [`kops`](https://github.com/kubernetes/kops/blob/master/docs/aws.md) makes setting up a kubernetes cluster on AWS significantly easier. Follow the [kops installation instructions](https://github.com/kubernetes/kops/blob/master/docs/aws.md) for your AWS account.
 
@@ -56,6 +58,8 @@ gcloud container clusters get-credentials [gke-cluster-name] --zone [gke-zone]
 
 Run the following commands using `kubectl` on the cluster.
  It will create the nessecary services and deployments.
+
+## Installing the demo application
 
 ### Running the New Relic-instrumented guestbook app on the cluster
 
@@ -71,7 +75,7 @@ service "frontend" created
 deployment "frontend" created
 ```
 
-### Installing New Relic Infrastructure integrations
+### Installing New Relic Infrastructure
 
 Based on the instructions on the [New Relic documentation website](https://docs.newrelic.com/docs/kubernetes-monitoring-integration).
 
@@ -85,6 +89,18 @@ Next, install the New Relic Infrastructure daemonset. Modify the file to point t
 
 ```
 $ kubectl apply -f k8s/newrelic/newrelic-infra-beta2.yml
+```
+
+### Creating a dashboard using Terraform
+
+New Relic dashboards and alert policies can be defined in Terraform. 
+
+There's an example in the `dashboard` directory. To create it, run the following commands in the `dashboard` directory. `terraform plan` previews the changes, and `terraform apply` actually creates the dashboard and alert policies:
+
+```
+ $ terraform init
+ $ terraform plan
+ $ terraform apply
 ```
 
 ### Deleting the deployment
