@@ -100,7 +100,7 @@ resource "newrelic_alert_condition" "bad_apdex" {
     duration      = 5
     operator      = "below"
     priority      = "critical"
-    threshold     = "0.75"
+    threshold     = "0.45"
     time_function = "all"
   }
 }
@@ -119,7 +119,7 @@ resource "newrelic_alert_channel" "email_channel" {
   }
 }
 
-resource "newrelic_alert_policy_channel" "foo" {
+resource "newrelic_alert_policy_channel" "default_email_channel" {
   policy_id  = "${newrelic_alert_policy.default_alert_policy.id}"
   channel_id = "${newrelic_alert_channel.email_channel.id}"
 }
