@@ -128,7 +128,9 @@ spec:
             cpu: 100m
             memory: 100Mi
         env:
-          # tells the node.js app to pause at random intervals
+        - name: NODE_ENV
+          value: production
+        # tells the node.js app to pause at random intervals
         - name: LOOK_BUSY
           value: t
           # tells the node.js app to throw synthetic errors
